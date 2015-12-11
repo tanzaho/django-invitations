@@ -4,6 +4,7 @@ from django.conf import settings
 from django.template import TemplateDoesNotExist
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.contrib.sites.models import Site
+import random
 
 try:
     from django.utils.encoding import force_text
@@ -34,6 +35,11 @@ class BaseInvitationsAdapter(object):
         Renders an e-mail to `email`.  `template_prefix` identifies the
         e-mail that is to be sent, e.g. "account/email/email_confirmation"
         """
+
+        # AB Testing features
+        template_prefix = random.choice(["A","B"])
+        tag = "Invitation_to_beta_" + ab_version
+
         subject = render_to_string('{0}_subject.txt'.format(template_prefix),
                                    context)
         # remove superfluous line breaks
@@ -58,11 +64,14 @@ class BaseInvitationsAdapter(object):
             if 'html' in bodies:
                 msg.attach_alternative(bodies['html'], 'text/html')
         else:
+
             msg = EmailMessage(subject,
                                bodies['html'],
                                settings.DEFAULT_FROM_EMAIL,
                                [email])
             msg.content_subtype = 'html'  # Main content is now text/html
+
+        msg.tags = [tag]
         return msg
 
     def send_mail(self, template_prefix, email, context):
