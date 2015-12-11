@@ -27,8 +27,7 @@ class BaseInvitationsAdapter(object):
 
     def format_email_subject(self, subject):
         site = Site.objects.get_current()
-        prefix = "[{name}] ".format(name=site.name)
-        return prefix + force_text(subject)
+        return force_text(subject)
 
     def render_mail(self, template_prefix, email, context):
         """
