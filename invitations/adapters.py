@@ -37,7 +37,7 @@ class BaseInvitationsAdapter(object):
         """
 
         # AB Testing features
-        template_prefix = random.choice(["A","B"])
+        ab_version = random.choice(["A","B"])
         tag = "Invitation_to_beta_" + ab_version
 
         subject = render_to_string('{0}_subject.txt'.format(template_prefix),
@@ -49,7 +49,7 @@ class BaseInvitationsAdapter(object):
         bodies = {}
         for ext in ['html', 'txt']:
             try:
-                template_name = '{0}_message.{1}'.format(template_prefix, ext)
+                template_name = '{0}_message_{1}.{2}'.format(template_prefix, ab_version, ext)
                 bodies[ext] = render_to_string(template_name,
                                                context).strip()
             except TemplateDoesNotExist:
