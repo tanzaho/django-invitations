@@ -20,7 +20,7 @@ class Invitation(models.Model):
 
     email = models.EmailField(unique=True, verbose_name=_('e-mail address'))
     confirmed = models.BooleanField(verbose_name=_('confirmed'), default=False)
-    accepted = models.BooleanField(verbose_name=_('accepted'), default=False)
+    accepted = models.BooleanField(verbose_name=_('clicked'), default=False)
     created = models.DateTimeField(verbose_name=_('created'),
                                    default=timezone.now)
     key = models.CharField(verbose_name=_('key'), max_length=64, unique=True)
@@ -79,6 +79,9 @@ class Invitation(models.Model):
         return "Invite: {0}".format(self.email)
 
 
+
+
+
 # here for backwards compatibility, historic allauth adapter
 if hasattr(settings, 'ACCOUNT_ADAPTER'):
     if settings.ACCOUNT_ADAPTER == 'invitations.models.InvitationsAdapter':
@@ -96,3 +99,20 @@ if hasattr(settings, 'ACCOUNT_ADAPTER'):
                 else:
                     # Site is open to signup
                     return True
+
+
+
+
+from allauth.account.signals import user_signed_up
+from django.dispatch import receiver
+
+@receiver(user_signed_up, dispatch_uid="confirm_invitation")
+def confirmInvitation(request, user, **kwargs):
+
+    email = user.email
+    try:
+        invitation = Invitation.objects.get(email=email)
+        invitation.confirmed = True
+        invitation.save()
+    except:
+        pass
