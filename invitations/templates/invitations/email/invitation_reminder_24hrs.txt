@@ -1,0 +1,11 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktrans %}Hello,
+
+You ({{ email }}) have been invited to join {{ site_name }}
+
+We remind you that your invitation is only valid for the next 24 hours. 
+If you'd like to join, please go to {{ invite_url }}
+
+{% endblocktrans %}
+{% endautoescape %}

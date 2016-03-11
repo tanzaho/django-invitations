@@ -15,6 +15,7 @@ from .adapters import get_invitations_adapter
 from . import signals
 
 
+
 @python_2_unicode_compatible
 class Invitation(models.Model):
 
@@ -75,6 +76,10 @@ class Invitation(models.Model):
             invite_url_sent=invite_url,
             inviter=self.inviter)
 
+
+        from .tasks import resend_inactive_invitations
+        resend_inactive_invitations(self.pk, ctx)
+
     def __str__(self):
         return "Invite: {0}".format(self.email)
 
@@ -105,6 +110,7 @@ if hasattr(settings, 'ACCOUNT_ADAPTER'):
 
 from allauth.account.signals import user_signed_up
 from django.dispatch import receiver
+
 
 @receiver(user_signed_up, dispatch_uid="confirm_invitation")
 def confirmInvitation(request, user, **kwargs):
