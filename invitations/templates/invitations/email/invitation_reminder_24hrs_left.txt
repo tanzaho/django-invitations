@@ -4,10 +4,10 @@
 
 You ({{ email }}) have been invited to join {{ site_name }}
 
-We remind you that this special invitation is only valid for a few days.
+We remind you that your invitation is only valid for the next 24 hours.
 If you'd like to join, please go to {{ invite_url }}
 
-If you don't want to join, please, let me know ASAP so I can reallocate your seat to someone else in our waiting list.
+This is our last reminder. Tomorrow your invitation will expire and you will need to re-apply to get a new one.
 
 {% endblocktrans %}
 {% endautoescape %}

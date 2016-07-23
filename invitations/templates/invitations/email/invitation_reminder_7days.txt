@@ -2,10 +2,12 @@
 {% autoescape off %}
 {% blocktrans %}Hello,
 
-You ({{ email }}) have been invited to join {{ site_name }}
+Last week you ({{ email }}) have been invited to join {{ site_name }}.
 
-We remind you that this special invitation is only valid for a few days.
+We remind you that this special invitation is only valid for one week.
 If you'd like to join, please go to {{ invite_url }}
+
+Remember that Repost is a tool that help you to distribute your content on social media more efficiently on the long run.
 
 If you don't want to join, please, let me know ASAP so I can reallocate your seat to someone else in our waiting list.
 

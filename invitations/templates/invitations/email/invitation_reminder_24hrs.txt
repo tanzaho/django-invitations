@@ -2,10 +2,12 @@
 {% autoescape off %}
 {% blocktrans %}Hello,
 
-You ({{ email }}) have been invited to join {{ site_name }}
+Yesterday you ({{ email }}) have been invited to join {{ site_name }}.
 
-We remind you that your invitation is only valid for the next 24 hours. 
-If you'd like to join, please go to {{ invite_url }}
+We remind you that your invitation is only valid for a limited time (14 days).
+If you'd like to join, please go to {{ invite_url }}.
+
+We will send you other reminders tomorrow, in one week and the day before your invitation expires.
 
 {% endblocktrans %}
 {% endautoescape %}
