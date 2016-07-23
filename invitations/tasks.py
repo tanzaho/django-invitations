@@ -61,6 +61,7 @@ def send_reminder(email, newsletter_name, title, ctx, invitation_id):
     # email.content_subtype = "text/html"  # Main content is now text/html (or just html?)
     tag = newsletter_name
     email.tags = [tag]
+    email.track_clicks = True
     email.send()
 
     # Setting the flag to True
