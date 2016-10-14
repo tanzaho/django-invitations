@@ -51,7 +51,7 @@ class Invitation(models.Model):
     inviter = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True)
 
-    unsubscribe_slug = models.SlugField(max_length=32, default=_create_unsubscribe_slug)  # the unsubscribe token
+    unsubscribe_slug = models.SlugField(max_length=32, unique=True, default=_create_unsubscribe_slug)  # the unsubscribe token
     want_mails = models.BooleanField(default=True)
 
     objects = InvitationManager()

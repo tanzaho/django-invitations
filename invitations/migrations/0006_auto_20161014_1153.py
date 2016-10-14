@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import invitations.models
 
 
 class Migration(migrations.Migration):
@@ -15,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='invitation',
             name='unsubscribe_slug',
-            field=models.SlugField(default=invitations.models._create_unsubscribe_slug, max_length=32),
+            field=models.SlugField(max_length=32, null=True, blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
