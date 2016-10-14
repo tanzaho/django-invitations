@@ -5,7 +5,7 @@ from .forms import InvitationAdminAddForm, InvitationAdminChangeForm
 
 
 class InvitationAdmin(admin.ModelAdmin):
-    list_display = ('email', 'sent', 'accepted', 'confirmed')
+    list_display = ('email', 'sent', 'accepted', 'confirmed', 'want_mails')
 
     def get_form(self, request, obj=None, **kwargs):
         if obj:

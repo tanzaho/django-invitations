@@ -4,7 +4,7 @@ from django.views.generic import FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib import messages
 from django.http import Http404, HttpResponse
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, render
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
@@ -138,7 +138,23 @@ class AcceptInvite(SingleObjectMixin, View):
                 return HttpResponse(response)
 
             return queryset
-            
+
 
     def get_queryset(self):
         return Invitation.objects.all_valid()
+
+
+def UnsubscribeInvite(request, token):
+    """
+    Stop sending emails to author
+    """
+    try:
+        invitation = Invitation.objects.get(unsubscribe_slug=token)
+    except:
+        return render(request, "referral_campaign/unsubscribe.html", {'display_form': False})
+    if request.method == "POST":
+        invitation.want_mails = False
+        invitation.save()
+        return render(request, "referral_campaign/unsubscribe.html", {'display_form': True, 'submitted': True})
+    else:
+        return render(request, "referral_campaign/unsubscribe.html", {'display_form': True, 'submitted': False})

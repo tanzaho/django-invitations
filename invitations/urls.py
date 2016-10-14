@@ -13,4 +13,7 @@ urlpatterns = patterns(
 
     url(r'^accept-invite/(?P<key>\w+)/?$', views.AcceptInvite.as_view(),
         name='accept-invite'),
+
+    url(r'^unsubscribe_invitation/(?P<token>\w+)/?$', views.UnsubscribeInvite,
+        name='unsubscribe_invitation'),
 )

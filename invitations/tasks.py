@@ -22,12 +22,12 @@ def resend_inactive_invitations(invitation_id, ctx):
         logger.info('Could not find scheduler')
 
     # Send two days before expiration
-    scheduler.enqueue_in(timedelta(days=1), send_reminder, ctx['email'], 'invitation_reminder_24hrs', '[Elokenz] Invitation to discover Repost - Reminder', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(days=2), send_reminder, ctx['email'], 'invitation_reminder_48hrs', '[Elokenz] Do you still want to discover Repost ?', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(days=7), send_reminder, ctx['email'], 'invitation_reminder_7days', '[Elokenz] Are you still interested by Repost ?', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(minutes=1), send_reminder, ctx['email'], 'invitation_reminder_24hrs', '[Elokenz] Invitation to discover Repost - Reminder', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(minutes=2), send_reminder, ctx['email'], 'invitation_reminder_48hrs', '[Elokenz] Do you still want to discover Repost ?', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(minutes=7), send_reminder, ctx['email'], 'invitation_reminder_7days', '[Elokenz] Are you still interested by Repost ?', ctx, invitation_id)
 
-    scheduler.enqueue_in(timedelta(days=app_settings.INVITATION_EXPIRY - 2), send_reminder, ctx['email'], 'invitation_reminder_48hrs_left', '[Elokenz] Your invitation is expiring tomorrow', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(days=app_settings.INVITATION_EXPIRY - 1), send_reminder, ctx['email'], 'invitation_reminder_24hrs_left', '[Elokenz] Your invitation is expiring today', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(minutes=app_settings.INVITATION_EXPIRY - 2), send_reminder, ctx['email'], 'invitation_reminder_48hrs_left', '[Elokenz] Your invitation is expiring tomorrow', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(minutes=app_settings.INVITATION_EXPIRY - 1), send_reminder, ctx['email'], 'invitation_reminder_24hrs_left', '[Elokenz] Your invitation is expiring today', ctx, invitation_id)
 
 
 @job
@@ -41,11 +41,15 @@ def send_reminder(email, newsletter_name, title, ctx, invitation_id):
     newsletter_name = "step1"
     """
     logger.info('We prepare to send a reminder to :' + unicode(email))
+
     # If invitation has been accepted, don't do nothing
     invitation = Invitation.objects.get(id=invitation_id)
     if invitation.accepted:
         return
 
+    # If player doesn't want email, we don't do anything
+    if not invitation.want_mails:
+        return
     #  Newsletter specific info (change them for each NL !!!!!!!)
     nl_folder = "invitations/email/" + str(newsletter_name)
 
