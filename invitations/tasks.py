@@ -22,12 +22,12 @@ def resend_inactive_invitations(invitation_id, ctx):
         logger.info('Could not find scheduler')
 
     # Send two days before expiration
-    scheduler.enqueue_in(timedelta(minutes=1), send_reminder, ctx['email'], 'invitation_reminder_24hrs', '[Elokenz] Invitation to discover Repost - Reminder', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(minutes=2), send_reminder, ctx['email'], 'invitation_reminder_48hrs', '[Elokenz] Do you still want to discover Repost ?', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(minutes=7), send_reminder, ctx['email'], 'invitation_reminder_7days', '[Elokenz] Are you still interested by Repost ?', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(days=1), send_reminder, ctx['email'], 'invitation_reminder_24hrs', '[Elokenz] Invitation to discover Repost - Reminder', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(days=2), send_reminder, ctx['email'], 'invitation_reminder_48hrs', '[Elokenz] Do you still want to discover Repost ?', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(days=7), send_reminder, ctx['email'], 'invitation_reminder_7days', '[Elokenz] Are you still interested by Repost ?', ctx, invitation_id)
 
-    scheduler.enqueue_in(timedelta(minutes=app_settings.INVITATION_EXPIRY - 2), send_reminder, ctx['email'], 'invitation_reminder_48hrs_left', '[Elokenz] Your invitation is expiring tomorrow', ctx, invitation_id)
-    scheduler.enqueue_in(timedelta(minutes=app_settings.INVITATION_EXPIRY - 1), send_reminder, ctx['email'], 'invitation_reminder_24hrs_left', '[Elokenz] Your invitation is expiring today', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(days=app_settings.INVITATION_EXPIRY - 2), send_reminder, ctx['email'], 'invitation_reminder_48hrs_left', '[Elokenz] Your invitation is expiring tomorrow', ctx, invitation_id)
+    scheduler.enqueue_in(timedelta(days=app_settings.INVITATION_EXPIRY - 1), send_reminder, ctx['email'], 'invitation_reminder_24hrs_left', '[Elokenz] Your invitation is expiring today', ctx, invitation_id)
 
 
 @job
